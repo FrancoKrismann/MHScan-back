@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createManhua, deleteManhua, getManhua, getManhuas, updateManhua } from "../controllers/task.controller.js";
-import { subirImagen } from "../middlewares/ImageSave.js";
+import { upload } from "../libs/storage.js";
 import { authRequired, } from "../middlewares/validateToken.js";
 
 const router = Router()
@@ -9,7 +9,7 @@ router.get("/manhuas", authRequired, getManhuas)
 
 router.get("/manhuas/:id", authRequired, getManhua)
 
-router.post("/manhuas", subirImagen.single("imagen"),createManhua)
+router.post("/manhuas", upload.single("image"),createManhua)
 
 router.delete("/manhuas/:id", authRequired, deleteManhua)
 

@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { config } from "../config.js";
+
 
 const chapterSchema = new mongoose.Schema(
   {
@@ -62,5 +64,10 @@ const ManghuaSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+ManghuaSchema.methods.setImgUrl = function setImgUrl (filename){
+  const {host, port} = config.appConfig
+  this.imgUrl = `${host}:${port}/public/${filename}`;
+}
 
 export default mongoose.model("Manga", ManghuaSchema);
