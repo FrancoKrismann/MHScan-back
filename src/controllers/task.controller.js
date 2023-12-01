@@ -5,35 +5,37 @@ import Manga from "../models/Mangas.model.js";
 export const getManhuas = async (req, res) => {};
 
 export const createManhua = async (req, res) => {
-  const { title, chapters, href, detail } = req.body;
-console.log("Pasa");
-  
+  const { title, href } = req.body;
+// console.log("Pasa");
+// console.log(req.body);
+const formData = req.body;
+const detalleInfo = JSON.parse(formData.detail);
+const chaptersInfo = JSON.parse(formData.chapters)
 
+const mainImage = req.file.filename; 
+const mainImagesArray = req.files.filename
   try {
     const newManga = Manga({
       title,
       href,
-      detail,
-      chapters,
+      image:mainImage,
+      detail:detalleInfo,
+      chapters:chaptersInfo,
     });
-    if(req.file) {
-    const {filename} = req.file
-    newManga.setImgUrl(filename)
-  }
 
     const MangaSaved = await newManga.save();
+
     res.json({
       id: MangaSaved.id,
       title: MangaSaved.title,
       href: MangaSaved.href,
       chapters: MangaSaved.chapters,
-      imgUrl: MangaSaved.imgUrl,
+      image: MangaSaved.image,
       detail: MangaSaved.detail,
       createdAt: MangaSaved.createdAt,
       updatedAt: MangaSaved.updatedAt,
     });
   } catch (error) {
-    // Maneja cualquier error que ocurra durante la creación
     res.status(500).json({ error: error.message });
   }
 };

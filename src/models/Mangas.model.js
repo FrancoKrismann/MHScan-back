@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { config } from "../config.js";
 
 
 const chapterSchema = new mongoose.Schema(
@@ -29,10 +28,7 @@ const detailSchema = new mongoose.Schema({
   type: String,
   releaser: Number,
   status: String,
-  description: {
-    type: [String],
-    default: [],
-  },
+  description: String
 });
 
 const ManghuaSchema = new mongoose.Schema(
@@ -47,13 +43,12 @@ const ManghuaSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    imgUrl: String,
+    image: String,
     detail: {
       type: [detailSchema],
       required: true,
       trim: true,
       unique: true,
-      default: [],
     },
     chapters: {
       type: [chapterSchema],
@@ -65,9 +60,9 @@ const ManghuaSchema = new mongoose.Schema(
   }
 );
 
-ManghuaSchema.methods.setImgUrl = function setImgUrl (filename){
-  const {host, port} = config.appConfig
-  this.imgUrl = `${host}:${port}/public/${filename}`;
-}
+// ManghuaSchema.methods.setImgUrl = function setImgUrl (filename){
+//   const {host, port} = config.appConfig
+//   this.imgUrl = `${host}:${port}/public/${filename}`;
+// }
 
 export default mongoose.model("Manga", ManghuaSchema);
