@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createManhua, deleteManhua, getManhua, getManhuas, updateManhua } from "../controllers/task.controller.js";
-import { uploadMultiple, uploadSingle } from "../libs/storage.js";
 import { authRequired, } from "../middlewares/validateToken.js";
+
 
 const router = Router()
 
@@ -12,36 +12,33 @@ router.get("/manhuas", authRequired, getManhuas)
 
 router.get("/manhuas/:id", authRequired, getManhua)
 
-// router.post("/manhuas", uploadSingle.single("image"), uploadMultiple.array("data"),createManhua)
-router.post("/manhuas", (req, res, next) => {
-    // Manejo de la imagen individual (uploadSingle.single)
-    uploadSingle.single("image")(req, res, err => {
-      if (err) {
-        return res.status(400).send("Error al cargar la imagen individual");
-      }
-      
-      // Si no hay errores con la imagen individual, guardarla en req.singleImage y proceder al siguiente middleware
-      
-      next();
-    });
-  }, (req, res, next) => {
-    console.log(req.body);
-    // Manejo del array de imágenes (uploadMultiple.array)
-    if (!req.body.chapters || !req.body.chapters[0].data) {
-        return res.status(400).send("Falta la propiedad 'chapters' o 'data'");
-      }
-    uploadMultiple.array("data")(req, res, err => {
-        console.log(req.files);
-        
+router.post("/manhuas"
+   ,createManhua)
+// router.post("/manhuas", uploadSingle, (req, res, next) => {
+//   if (req.file) {
+//     console.log("Imagen individual subida:", req.file);
+//   } else {
+//     return res.status(400).send("Error al cargar la imagen individual");
+//   }
+//   next();
+// }, (req, res, next) => {
+//   if (!req.body.chapters) {
+//     return res.status(400).send("Chapters está vacío");
+//   }
 
-      if (err) {
-        return res.status(400).send("Error al cargar el array de imágenes");
-      }
-  
-      // Si no hay errores con el array de imágenes, guardarlas en req.multipleImages y proceder al siguiente middleware
-      next();
-    });
-  }, createManhua);
+//   uploadMultiple(req, res, err => {
+// console.log("Pasa por Multipler",req.body);   
+//  if (err instanceof multer.MulterError) {
+//       // Si hay un error de Multer, manejarlo aquí
+//       return res.status(500).json({ message: 'Error al subir archivos.' });
+//     } else if (err) {
+//       // Si hay otro tipo de error, manejarlo aquí
+//       return res.status(500).json({ message: 'Otro tipo de error.' });
+//     }
+//     console.log("Archivos subidos correctamente:", req.files);
+//     return res.status(200).json({ message: 'Archivos subidos correctamente.' });
+//   });
+// }, createManhua);
   
 
 router.delete("/manhuas/:id", authRequired, deleteManhua)
