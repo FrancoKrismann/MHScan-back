@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 const chapterSchema = new mongoose.Schema(
   {
     chapter: {
-      type: Number,
+      type: Number || String,
       required: true,
     },
     data: {
-      type: [String],
+      type: [String] || FileList,
       default: [],
     },
   },

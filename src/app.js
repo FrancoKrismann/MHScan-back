@@ -27,7 +27,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Ajusta el 
 
 app.use(express.json())
 app.use(cookieParser())
-app.use("/public", express.static(path.join(__dirname, 'storage', 'imgs')));
+app.use('/public/image', express.static(path.join(__dirname, 'public', 'image')));
+app.use('/public/chapters', express.static(path.join(__dirname, 'public', 'chapters')));
 
 app.use("/api",AuthRoutes)
 app.use("/api",MangasRoutes)

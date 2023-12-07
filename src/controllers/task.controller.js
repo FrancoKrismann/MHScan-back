@@ -5,21 +5,21 @@ import Manga from "../models/Mangas.model.js";
 export const getManhuas = async (req, res) => {};
 
 export const createManhua = async (req, res) => {
-  const { title, href , chapters} = req.body;
-console.log("Pasa");
-console.log(req.body);
-const formData = req.body;
-const detalleInfo = JSON.parse(formData.detail);
-// const chaptersInfo = JSON.parse(formData.chapters)
+  console.log("Pasa");
+  const { title, href ,detail, chapters} = req.body;
+  // console.log(req.body);
 
-// const mainImage = req.file.filename; 
-// const mainImagesArray = req.files.filename
+console.log("Title: ",title);
+console.log("href: ",href);
+console.log("Detail: ",detail);
+console.log("Chapters: ",chapters)
+
   try {
     const newManga = Manga({
       title,
       href,
-      image:mainImage,
-      detail:detalleInfo,
+      image:"",
+      detail:detail,
       chapters:chapters,
     });
 
